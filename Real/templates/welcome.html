@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- add a small box on top left of this webpage to go to 'compare.html' -->
+    <div class="compare-container" onclick="redirectToCompare()">
+        <h5>Compare</h5>
+    </div>
+    <div class="welcome-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>This is your dashboard.</p>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
+    <!-- <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search names...">
+    </div> -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search names...">
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const nameList = document.getElementById('nameList');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const listItems = nameList.getElementsByTagName('li');
+
+                for (let i = 0; i < listItems.length; i++) {
+                    const listItem = listItems[i];
+                    const textContent = listItem.textContent.toLowerCase();
+
+                    if (textContent.includes(searchTerm)) {
+                        listItem.style.display = 'block';
+                    } else {
+                        listItem.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+    <div class="scrollable-container">
+        <ul>
+            <li>ADANIENT</li>
+            <li>ADANIPORTS</li>
+            <li>APOLLOHOSP</li>
+            <li>ASIANPAINT</li>
+            <li>AXISBANK</li>
+            <li>BAJAJ-AUTO</li>
+            <li>BAJFINANCE</li>
+            <li>BAJAJFINSV</li>
+            <li>BPCL</li>
+            <li>BHARTIARTL</li>
+            <li>BRITANNIA</li>
+            <li>CIPLA</li>
+            <li>COALINDIA</li>
+            <li>DIVISLAB</li>
+            <li>DRREDDY</li>
+            <li>EICHERMOT</li>
+            <li>GRASIM</li>
+            <li>HCLTECH</li>
+            <li>HDFCBANK</li>
+            <li>HDFCLIFE</li>
+            <li>HEROMOTOCO</li>
+            <li>HINDALCO</li>
+            <li>HINDUNILVR</li>
+            <li>ICICIBANK</li>
+            <li>ITC</li>
+            <li>INDUSINDBK</li>
+            <li>INFY</li>
+            <li>JSWSTEEL</li>
+            <li>KOTAKBANK</li>
+            <li>LTIM</li>
+            <li>LT</li>
+            <li>MARUTI</li>
+            <li>NTPC</li>
+            <li>NESTLEIND</li>
+            <li>ONGC</li>
+            <li>POWERGRID</li>
+            <li>RELIANCE</li>
+            <li>SBILIFE</li>
+            <li>SBIN</li>
+            <li>SUNPHARMA</li>
+            <li>TCS</li>
+            <li>TATACONSUM</li>
+            <li>TATAMOTORS</li>
+            <li>TATASTEEL</li>
+            <li>TECHM</li>
+            <li>TITAN</li>
+            <li>UPL</li>
+            <li>ULTRACEMCO</li>
+            <li>WIPRO</li>
+        </ul>
+    </div>
+    <script>
+        function redirectToCompare() {
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>
