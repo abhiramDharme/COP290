@@ -31,7 +31,13 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
+fig=go.Figure()
+filtered_stocks=pd.read_csv('nifty.csv')["Symbol"].to_list()
+dropdown_stocks=filtered_stocks
+
 def plot_graph_candle(stock1, startDate, endDate, rsi, vwaps):
+    global fig
+    fig=go.Figure()
     stock_data = yf.download(stock1, start=startDate, end=endDate)
 
     stock_data['rsi'] = ta.rsi(stock_data['Close'], length=14)
@@ -39,9 +45,6 @@ def plot_graph_candle(stock1, startDate, endDate, rsi, vwaps):
     stock_data['typical_price'] = (stock_data['High'] + stock_data['Low'] + stock_data['Close']) / 3
 
     stock_data['vwap'] = ta.sma(stock_data['typical_price'] * stock_data['Volume'], length=14) / ta.sma(stock_data['Volume'], length=14)
-
-    #fig = make_subplots(rows=1, cols=1)
-    fig = go.Figure()
 
     if rsi=='true':
         fig.add_trace(go.Scatter(x=stock_data.index, 
@@ -65,14 +68,11 @@ def plot_graph_candle(stock1, startDate, endDate, rsi, vwaps):
                                 name=stock1,
                                 )
 
-    #fig.add_trace(candlestick, row=1, col=1)
     fig.add_trace(candlestick)
 
     fig.update_xaxes(rangeslider_visible=True, 
-                     #row=1, col=1)
     )
     fig.update_yaxes(title_text='Stock Price (INR)', 
-                     #row=1, col=1)
     )
 
     # Update layout for better visibility
@@ -84,9 +84,8 @@ def plot_graph_candle(stock1, startDate, endDate, rsi, vwaps):
                     yaxis=dict(fixedrange=False)
                 )
 
-    return fig
-
-def plot_graph_line(stock, startDate, endDate, fig):
+def plot_graph_line(stock, startDate, endDate):
+    global fig
     stock_data = yf.download(stock, start=startDate, end=endDate)
 
     fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], 
@@ -94,9 +93,11 @@ def plot_graph_line(stock, startDate, endDate, fig):
                              name=stock))
 
     fig.update_layout(showlegend=True,
-                      title="Comparison")
+                      title="Absolute Price Comparison")
 
 def plot_graph_relative(stocks, start_date, end_date):
+    global fig
+    fig = go.Figure()
     def fetch_stock_data(ticker, start_date, end_date):
         stock_data = yf.download(ticker, start=start_date, end=end_date)
         return stock_data['Adj Close']
@@ -104,8 +105,6 @@ def plot_graph_relative(stocks, start_date, end_date):
     stock_prices = {ticker: fetch_stock_data(ticker, start_date, end_date) for ticker in stocks}
 
     relative_rate_of_growth = {ticker: prices / prices.iloc[0] for ticker, prices in stock_prices.items()}
-
-    fig = go.Figure()
 
     for ticker, growth in relative_rate_of_growth.items():
         fig.add_trace(go.Scatter(x=growth.index, y=growth, 
@@ -217,85 +216,15 @@ def login():
     else:
         return redirect(url_for('index'))
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact_us():
-    if request.method == 'POST':
-        # Handle the form submission (you can customize this part based on your needs)
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
 
-
-        flash('Your message has been submitted. We will get back to you soon!', 'success')
-        return redirect(url_for('contact'))
-
-    return render_template('contact.html')
-
-
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET'])
 def dashboard():
+    global fig
+    global filtered_stocks
+    global dropdown_stocks
     if 'user_id' in session:
-        fig=plot_graph_candle('^NSEI', startDate=date.today()-relativedelta(years=1), endDate=date.today(), rsi='false', vwaps='false')
-
-        filtered_stocks = final_df['symbol'].tolist()
-        if request.method == 'POST':
-            # Fetch values from filters and apply them to your stock data
-            pe_ratio = request.form.get('pe_ratio')
-            dividend_yield = request.form.get('dividend_yield')
-            market_cap = request.form.get('market_cap')
-            market_cap_greater = request.form.get('market_cap_greater')
-            debt_to_equity = request.form.get('debt_to_equity')
-            current_ratio = request.form.get('current_ratio')
-            eps = request.form.get('eps')
-            price_to_book = request.form.get('price_to_book')
-            earning_growth = request.form.get('earning_growth')
-            ebitda_margin = request.form.get('ebitda_margin')
-            entreprise_to_ebitda = request.form.get('entreprise_to_ebitda')
-            peg_ratio = request.form.get('peg_ratio')
-            roe = request.form.get('roe')
-            roce = request.form.get('roce')
-            roa = request.form.get('roa')
-            price_to_sales = request.form.get('price_to_sales')
-
-            filter_df = final_df  # Initialize with the complete DataFrame
-
-            if pe_ratio is not None and pe_ratio != '':
-                filter_df = filter_df[filter_df['trailingPE'] <= float(pe_ratio)]
-            if dividend_yield is not None and dividend_yield != '':
-                filter_df = filter_df[filter_df['dividendYield'] >= float(dividend_yield)]
-            if market_cap is not None and market_cap != '':
-                filter_df = filter_df[filter_df['marketCap'] >= float(market_cap)]
-            if market_cap_greater is not None and market_cap_greater != '':
-                filter_df = filter_df[filter_df['marketCap'] <= float(market_cap_greater)]
-            if debt_to_equity is not None and debt_to_equity != '':
-                filter_df = filter_df[filter_df['debtToEquity'] <= float(debt_to_equity)]
-            if current_ratio is not None and current_ratio != '':
-                filter_df = filter_df[filter_df['currentRatio'] >= float(current_ratio)]
-            if eps is not None and eps != '':
-                filter_df = filter_df[filter_df['trailingEps'] >= float(eps)]
-            if price_to_book is not None and price_to_book != '':
-                filter_df = filter_df[filter_df['priceToBook'] <= float(price_to_book)]
-            if earning_growth is not None and earning_growth != '':
-                filter_df = filter_df[filter_df['earningsGrowth'] >= float(earning_growth)]
-            if ebitda_margin is not None and ebitda_margin != '':
-                filter_df = filter_df[filter_df['ebitdaMargins'] >= float(ebitda_margin)]
-            if entreprise_to_ebitda is not None and entreprise_to_ebitda != '':
-                filter_df = filter_df[filter_df['enterpriseToEbitda'] <= float(entreprise_to_ebitda)]
-            if peg_ratio is not None and peg_ratio != '':
-                filter_df = filter_df[filter_df['pegRatio'] <= float(peg_ratio)]
-            if roe is not None and roe != '':
-                filter_df = filter_df[filter_df['returnOnEquity'] >= float(roe)]
-            if roce is not None and roce != '':
-                filter_df = filter_df[filter_df['returnOnCapitalEmployed'] >= float(roce)]
-            if roa is not None and roa != '':
-                filter_df = filter_df[filter_df['returnOnAssets'] >= float(roa)]
-            if price_to_sales is not None and price_to_sales != '':
-                filter_df = filter_df[filter_df['priceToSalesTrailing12Months'] <= float(price_to_sales)]
-                
-
-            filtered_stocks = filter_df['symbol'].tolist()
-
-        return render_template('welcome.html', username=session['username'], fig=fig.to_html(full_html=False), filtered_stocks=filtered_stocks)
+        plot_graph_candle('^NSEI', startDate=date.today()-relativedelta(years=1), endDate=date.today(), rsi='false', vwaps='false')
+        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks)
     else:
         return redirect(url_for('index'))
 
@@ -305,9 +234,110 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-@app.route('/funds')
-def funds():
-    return render_template('funds.html')
+@app.route('/process_data', methods=['POST'])
+def process_data():
+    global fig
+    global filtered_stocks
+    fig=go.Figure()
+    stock1=request.form['stock1']
+    stock2=request.form['stock2']
+    stock3=request.form['stock3']
+    stock4=request.form['stock4']
+    endD=request.form['endDate']
+    if endD == "":
+        endD = date.today()
+    startD=request.form['startDate']
+    if startD == "":
+        startD = endD -relativedelta(years=1)
+    rsi=request.form['rsi']
+    vwaps=request.form['vwaps']
+    compare_type=request.form['compare_type']
+    if compare_type == "select":
+        compare_type = "absolute"
+
+    if(compare_type=='absolute'):
+        plot_graph_candle(stock1 + '.NS', startD, endD, rsi, vwaps)
+        if(stock2!='select'):
+            plot_graph_line(stock2 + '.NS', startD, endD)
+        if(stock3!='select'):
+            plot_graph_line(stock3 + '.NS', startD, endD)
+        if(stock4!='select'):
+            plot_graph_line(stock4 + '.NS', startD, endD)
+    
+    if(compare_type=='relative'):
+        stocks=[]
+        if(stock1!='select'): stocks.append(stock1+'.NS')
+        if(stock2!='select'): stocks.append(stock2+'.NS')
+        if(stock3!='select'): stocks.append(stock3+'.NS')
+        if(stock4!='select'): stocks.append(stock4+'.NS')
+        fig=plot_graph_relative(stocks, startD, endD)
+
+    
+    
+    return render_template('welcome.html', fig=fig.to_html(full_html=False), filtered_stocks=filtered_stocks, dropdown_stocks=dropdown_stocks)
+        
+@app.route('/filter', methods=['POST'])
+def filter():
+    global fig
+    global filtered_stocks
+    filtered_stocks = final_df['symbol'].tolist()
+    if request.method == 'POST':
+        pe_ratio = request.form.get('pe_ratio')
+        dividend_yield = request.form.get('dividend_yield')
+        market_cap = request.form.get('market_cap')
+        market_cap_greater = request.form.get('market_cap_greater')
+        debt_to_equity = request.form.get('debt_to_equity')
+        current_ratio = request.form.get('current_ratio')
+        eps = request.form.get('eps')
+        price_to_book = request.form.get('price_to_book')
+        earning_growth = request.form.get('earning_growth')
+        ebitda_margin = request.form.get('ebitda_margin')
+        entreprise_to_ebitda = request.form.get('entreprise_to_ebitda')
+        peg_ratio = request.form.get('peg_ratio')
+        roe = request.form.get('roe')
+        roce = request.form.get('roce')
+        roa = request.form.get('roa')
+        price_to_sales = request.form.get('price_to_sales')
+
+        filter_df = final_df  # Initialize with the complete DataFrame
+
+        if pe_ratio is not None and pe_ratio != '':
+            filter_df = filter_df[filter_df['trailingPE'] <= float(pe_ratio)]
+        if dividend_yield is not None and dividend_yield != '':
+            filter_df = filter_df[filter_df['dividendYield'] >= float(dividend_yield)]
+        if market_cap is not None and market_cap != '':
+            filter_df = filter_df[filter_df['marketCap'] >= float(market_cap)]
+        if market_cap_greater is not None and market_cap_greater != '':
+            filter_df = filter_df[filter_df['marketCap'] <= float(market_cap_greater)]
+        if debt_to_equity is not None and debt_to_equity != '':
+            filter_df = filter_df[filter_df['debtToEquity'] <= float(debt_to_equity)]
+        if current_ratio is not None and current_ratio != '':
+            filter_df = filter_df[filter_df['currentRatio'] >= float(current_ratio)]
+        if eps is not None and eps != '':
+            filter_df = filter_df[filter_df['trailingEps'] >= float(eps)]
+        if price_to_book is not None and price_to_book != '':
+            filter_df = filter_df[filter_df['priceToBook'] <= float(price_to_book)]
+        if earning_growth is not None and earning_growth != '':
+            filter_df = filter_df[filter_df['earningsGrowth'] >= float(earning_growth)]
+        if ebitda_margin is not None and ebitda_margin != '':
+            filter_df = filter_df[filter_df['ebitdaMargins'] >= float(ebitda_margin)]
+        if entreprise_to_ebitda is not None and entreprise_to_ebitda != '':
+            filter_df = filter_df[filter_df['enterpriseToEbitda'] <= float(entreprise_to_ebitda)]
+        if peg_ratio is not None and peg_ratio != '':
+            filter_df = filter_df[filter_df['pegRatio'] <= float(peg_ratio)]
+        if roe is not None and roe != '':
+            filter_df = filter_df[filter_df['returnOnEquity'] >= float(roe)]
+        if roce is not None and roce != '':
+            filter_df = filter_df[filter_df['returnOnCapitalEmployed'] >= float(roce)]
+        if roa is not None and roa != '':
+            filter_df = filter_df[filter_df['returnOnAssets'] >= float(roa)]
+        if price_to_sales is not None and price_to_sales != '':
+            filter_df = filter_df[filter_df['priceToSalesTrailing12Months'] <= float(price_to_sales)]
+            
+
+    filtered_stocks = filter_df['symbol'].tolist()
+
+    return render_template('welcome.html', fig=fig.to_html(full_html=False), filtered_stocks=filtered_stocks, dropdown_stocks=dropdown_stocks)
 
 @app.route('/profile')
 def profile():
@@ -331,45 +361,24 @@ def profile():
             return redirect(url_for('index'))
     else:
         return redirect(url_for('index'))
-
-@app.route('/process_data', methods=['POST'])
-def process_data():
-    stock1=request.form['stock1']
-    stock2=request.form['stock2']
-    stock3=request.form['stock3']
-    stock4=request.form['stock4']
-    startD=request.form['startDate']
-    if startD == None:
-        startD = date.today()-relativedelta(years=1)
-    endD=request.form['endDate']
-    if endD == None:
-        endD = date.today()
-    rsi=request.form['rsi']
-    vwaps=request.form['vwaps']
-    compare_type=request.form['compare_type']
-    fig=go.Figure()
-
-    if(compare_type=='absolute'):
-        fig=plot_graph_candle(stock1 + '.NS', startD, endD, rsi, vwaps)
-        if(stock2!='select'):
-            plot_graph_line(stock2 + '.NS', startD, endD, fig)
-        if(stock3!='select'):
-            plot_graph_line(stock3 + '.NS', startD, endD, fig)
-        if(stock4!='select'):
-            plot_graph_line(stock4 + '.NS', startD, endD, fig)
     
-    if(compare_type=='relative'):
-        stocks=[]
-        if(stock1!='select'): stocks.append(stock1+'.NS')
-        if(stock2!='select'): stocks.append(stock2+'.NS')
-        if(stock3!='select'): stocks.append(stock3+'.NS')
-        if(stock4!='select'): stocks.append(stock4+'.NS')
-        fig=plot_graph_relative(stocks, startD, endD)
 
-    
-    
-    return render_template('welcome.html', fig=fig.to_html(full_html=False))
-        
+@app.route('/contact', methods=['POST', 'GET'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+
+
+        flash('Your message has been submitted. We will get back to you soon!', 'success')
+        return redirect(url_for('contact'))
+
+    return render_template('contact.html')
+
+@app.route('/funds')
+def funds():
+    return render_template('funds.html')
 
 
 if __name__ == '__main__':
