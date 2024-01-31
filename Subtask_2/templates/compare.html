@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdowns and Flask</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 50px;
+        }
+
+        select {
+            width: 150px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Dropdowns and Flask</h2>
+    <form action="/submit" method="post">
+        <select name="Stock 1">
+            <option value="select">Select</option>
+            <option value="ADANIENT">ADANIENT</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>
+        </select>
+
+        <select name="Stock 2">
+            <option value="select">Select</option>
+            <option value="ADANIENT">ADANIENT</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>
+        </select>
+
+        <select name="Stock 3">
+            <option value="select">Select</option>
+            <option value="ADANIENT">ADANIENT</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>
+        </select>
+
+        <select name="Stock 4">
+            <option value="select">Select</option>
+            <option value="ADANIENT">ADANIENT</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>
+        </select>
+
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

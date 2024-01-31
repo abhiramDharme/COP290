@@ -1,0 +1,412 @@
+/* style.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #e0e0fe, hsl(189, 78%, 95%));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+
+}
+
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+
+}
+    /* Add this to your existing style.css */
+
+.welcome-container {
+    text-align: center;
+    background-color: white;
+    padding: 20px; /* Add padding as needed */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Adjust box-shadow opacity */
+    width: 280px;
+    position: fixed;
+    top: 30px;
+    left: 1130px;
+}   
+
+.welcome-container h1 {
+    margin-bottom: 20px;
+
+}
+
+#filterForm {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    height: 150px;
+    overflow-y: auto;
+    position: fixed;
+    top: 30px;
+    left: 1130px;
+    z-index: 1;
+}
+
+.compare-container {
+    background-color: #007bff;
+    padding: 0px;
+    border-radius: 1px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    width: 140px;
+    height: 25px;
+    margin: auto;
+    position: fixed;
+    top: 30px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease; /* Apply the transition to all properties for a smooth effect */
+    border-radius: 10px;
+    font-size: small;
+}
+
+.compare-container:hover {
+    background-color: #0069d9;
+}
+
+.submit-container:hover {
+    background-color: #0069d9;
+}
+
+.graph-container {
+    position: fixed;
+    top: 120px;  /* Adjust the top position */
+    left: 208px;  /* Adjust the left position */
+    width: 850px;  /* Adjust the width */
+    height: 515px;  /* Adjust the height */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+
+}
+
+.submit-container {
+    background-color: #007bff;
+    padding: 0px;
+    border-radius: 1px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    width: 140px;
+    height: 25px;
+    margin: auto;
+    position: fixed;
+    top: 65px;
+    left: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Apply the transition to all properties for a smooth effect */
+    border-radius: 10px;
+    font-size: small;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 30px; /* Adjust based on your design */
+    left: 230px; /* Adjust based on your design and the width of the "Compare" container */
+    width: 38%; /* Use 100% width to stretch across the screen */
+    height: 50 px;
+    justify-content: space-between;
+}
+
+.small-label {
+    font-size: 14px;
+}
+
+.checkbox-1{
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 101px; /* Adjust based on your design */
+    left: 50px; /* Adjust based on your design and the width of the "Compare" container */
+}
+
+.checkbox-2{
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 101px; /* Adjust based on your design */
+    left: 110px; /* Adjust based on your design and the width of the "Compare" container */
+
+}
+
+.dropdown {
+    width: 100px; /* Match the width of the "Compare" container */
+    height: 50px; /* Match the height of the "Compare" container */
+    padding: 5px;
+}
+
+.date-selector-1 {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 27px; /* Adjust based on your design */
+    left: 805px; /* Adjust based on your design and the width of the "Compare" container */
+    width: 200px; /* Use 100% width to stretch across the screen */
+    height: 50 px;
+    /* justify-content: space-between; */
+}
+
+.date-selector-2 {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 27px; /* Adjust based on your design */
+    left: 963px; /* Adjust based on your design and the width of the "Compare" container */
+    width: 200px; /* Use 100% width to stretch across the screen */
+    height: 50 px;
+    /* justify-content: space-between; */
+}
+
+.logout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+    
+}
+
+.scrollable-container {
+    width: 280px; /* Set the width as needed */
+    height: 400px; /* Set the height as needed */
+    overflow-y: auto; /* Enable vertical scrollbar when content overflows */
+    border: 1px solid #ccc; /* Optional: Add border for styling */
+    margin: 50px auto; /* Center the container */
+    position: fixed;
+    top: 240px;
+    left: 1130px;
+    text-align: left;
+    background-color: white;
+    padding: 20px; /* Add padding as needed */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Adjust box-shadow opacity */
+    text-align: 0 0 20px rgba(0, 0, 0, 0.1); /* Adjust box-shadow opacity */
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #eee; /* Optional: Add a border between list items */
+}
+
+/* Optional: Style the scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.search-container {
+    text-align: center;
+    margin: 20px auto;
+    height: 35px;
+    position: fixed; /* Set relative positioning for the container */
+    top: 21px; /* Position the container at the top of the page */
+    left: 300px; /* Position the container 20px from the left */
+}
+
+#searchInput {
+    padding: 10px;
+    width: 400px;
+}
+
+#searchIcon {
+    position: fixed; /* Set absolute positioning */
+    top: 50%; /* Align to the vertical center of the container */
+    right: 10px; /* Adjust the distance from the right */
+    transform: translateY(-50%); /* Center vertically using translateY */
+    cursor: pointer;
+}
+
+nav {
+    background-color: #ffffff;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    left: 40px;
+    top: 130px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    height: 500px;
+    padding: 20px;
+    width: 100px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 10px;
+}
+
+nav li {
+    margin-bottom: 50px; /* Add margin-bottom to create space between list items */
+}
+
+nav a {
+    text-decoration: none;
+    color: #000; /* Change the link color */
+    font-weight: bold;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+    display: block;
+}
+
+nav a:hover {
+    color: #0069d9; /* Change the link color on hover */
+}
+
+.filter-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    position: fixed;
+    top: 240px;
+    width: 120px;
+    left: 1229px;
+}
+
+.filter-button:hover {
+    background-color: #0069d9;
+}
+
+#apply-filter {
+    top: 300px;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #e0e0fe, hsl(189, 78%, 95%));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.content p {
+    margin-bottom: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0069d9;
+}
+
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.small-font {
+    font-size: 0.6em; /* Adjust the font size as needed */
+    vertical-align: top;
+}
+
+#beautify {
+    font-size: 1.2em; /* Adjust the font size as needed */
+    color: #333; /* Adjust the font color as needed */
+    margin-bottom: 20px; /* Add margin as needed */
+}
