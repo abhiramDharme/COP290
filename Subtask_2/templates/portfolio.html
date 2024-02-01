@@ -3,8 +3,10 @@
 <head>
     <title>Portfolio</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='portfolio-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    
     <div class="portfolio-container">
         <h2>{{ username }}'s Portfolio</h2>
         
@@ -14,16 +16,11 @@
         <!-- Display total realized and unrealized profit/loss -->
         <p>Total Realized P&L: {{ total_realized_profit_loss }}</p>
         <p>Total Unrealized P&L: {{ total_unrealized_profit_loss }}</p>
-
-        <form action ="buy_sell" method="post">
-            <td>
-                <input type="number" name="quantity" placeholder="Quantity">
-                <button type="submit" name="action" value="buy">Buy</button>
-                <button type="submit" name="action" value="sell">Sell</button>
-            </td>
+    
+        <form action="buy_sell" method="post">
             <div class="dropdown-container">
-                <select name="stock1" class="dropdown">
-                    <option value="select">Primary Stock</option>
+                <select name="stock1" class="dropdown" required>
+                    <option value="">Primary Stock</option>
                     {% if dropdown_stocks_portfolio %}
                         {% for stock in dropdown_stocks_portfolio %}
                             <option value="{{ stock }}">{{ stock }}</option>
@@ -31,31 +28,47 @@
                     {% endif %}
                 </select>
             </div>
+            <td>
+                <input type="number" name="quantity" placeholder="Quantity">
+            </td>
+            <button type="submit" name="action" value="buy">Buy</button>
+            <button type="submit" name="action" value="sell">Sell</button>
         </form>
+    </div>
+    
 
-        <!-- Table to show user's stock portfolio -->
+    <div class="scrollable-container">
         <table>
-            <tr>
-                <th>Stock Symbol</th>
-                <th>Quantity</th>
-                <th>Average Buy Price</th>
-                <th>Current Price</th>
-                <th>Total Investment</th>
-                <th>Realized P&L</th>
-                <th>Unrealized P&L</th>
-            </tr>
-            {% for stock in portfolio %}
+            <thead>
                 <tr>
-                    <td>{{ stock.symbol }}</td>
-                    <td>{{ stock.quantity }}</td>
-                    <td>{{ stock.avg_buy_price }}</td>
-                    <td>{{ stock.current_price }}</td>
-                    <td>{{ stock.total_investment }}</td>
-                    <td>{{ stock.realized_profit_loss }}</td>
-                    <td>{{ stock.unrealized_profit_loss }}</td>
+                    <th>Stock Symbol</th>
+                    <th>Quantity</th>
+                    <th>Average Buy Price</th>
+                    <th>Current Price</th>
+                    <th>Total Investment</th>
+                    <th>Realized P&L</th>
+                    <th>Unrealized P&L</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for stock in portfolio %}
+                    <tr>
+                        <td>{{ stock.symbol }}</td>
+                        <td>{{ stock.quantity }}</td>
+                        <td>{{ stock.avg_buy_price }}</td>
+                        <td>{{ stock.current_price }}</td>
+                        <td>{{ stock.total_investment }}</td>
+                        <td>{{ stock.realized_profit_loss }}</td>
+                        <td>{{ stock.unrealized_profit_loss }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
+    
+
+    <a class="back-button" href="/dashboard">
+        <i class="fas fa-arrow-left fa-2x"></i>
+    </a>
 </body>
 </html>

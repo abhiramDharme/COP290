@@ -10,23 +10,6 @@ body {
     margin: 0;
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-.content p {
-    margin-bottom: 15px;
-}
-
 form {
     display: flex;
     flex-direction: column;
@@ -36,28 +19,32 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"],
-input[type="email"],
-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-
 button {
-    width: 100%;
+    width: 230px;
     padding: 10px;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
     background-color: #0069d9;
+}
+
+.portfolio-container {
+    margin: 0 auto;
+    padding: 20px;
+    left: 12%;
+    top: 30px;
+    position: fixed;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 240px;
+    text-align: center;
 }
 
 .footer {
@@ -78,4 +65,83 @@ button:hover {
     font-size: 1.2em; 
     color: #333; 
     margin-bottom: 20px; 
+}
+
+.back-button {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #007bff;; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3 ease;
+}
+
+.back-button:hover {
+    background-color: #0069d9;
+}
+
+.holdings {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.scrollable-container {
+    width: 800px; 
+    height: 700px; 
+    overflow-y: auto; 
+    border: 1px solid #ccc; 
+    /* margin: 50px auto; */
+    position: fixed;
+    top: 30px;
+    left: 540px;
+    text-align: left;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
+    text-align: 0 0 20px rgba(0, 0, 0, 0.1); 
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #eee; 
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+h2 {
+    color: #333;
+}
+
+p {
+    margin: 10px 0;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input, button, select {
+    margin: 5px;
 }

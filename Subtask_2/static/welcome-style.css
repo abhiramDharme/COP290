@@ -146,14 +146,13 @@ button {
 .menu-bar {
     background-color: #ffffff;
     color: #fff;
-    padding: 10px;
+    padding: 20px;
     position: fixed;
     left: 40px;
     top: 167px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     height: 500px;
-    padding: 20px;
     width: 100px;
 }
 
@@ -164,19 +163,19 @@ button {
 
 .menu-bar-nav i {
     display: block;
-    margin: -30px;
+    margin: -35px;
     margin-bottom: 10px;
 }
 
 .menu-bar-nav li {
-    margin-bottom: 39px;
+    margin-bottom: 70px;
 }
 
 .menu-bar-nav a {
     text-decoration: none;
     color: #000;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'Arial', sans-serif;
     display: block;
     text-align: center;

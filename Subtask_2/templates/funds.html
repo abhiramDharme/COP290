@@ -6,17 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Funds</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='funds-style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 
 <body>
 
     <div class="content">
         <h3>Welcome to our funds page.</h3> <h3>Explore the options to add or withdraw your funds:</h3>
-
-
-        <!-- Add more fund sections as needed -->
-
-        <!-- Form for adding funds -->
+        
         <div class="add-funds-form" id="addFundsForm">
             <h2>Add Funds to Your Demat Account</h2>
             <form action="/add_funds" method="POST" class="funds-form" id="addFundsForm">
@@ -26,7 +24,6 @@
             </form>
         </div>
         
-        <!-- Withdraw funds form -->
         <div class="withdraw-funds-form" id="withdrawFundsForm">
             <h2>Withdraw Funds from Your Demat Account</h2>
             <form action="/withdraw_funds" method="POST" class="funds-form" id="withdrawFundsForm">
@@ -38,39 +35,21 @@
 
         <div class="welcome-container">
             <h2>Welcome, {{ username }}!</h2>
-            <p>This is Funds . Your balance is {{balance}}</p>
-            <a href="/dashboard" class="dashboard-button">Dashboard</a>
+            <p>This is Funds. Current Balance: {{balance}}</p>
         </div>
-        
-        <!-- Display fund transaction status -->
-        <div class="fund-transaction-status">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for category, message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        </div>
-        
-        <script>
-            // Clear flashed messages after a delay
-            setTimeout(function() {
-                document.querySelectorAll('.flashes').forEach(function(flash) {
-                    flash.style.display = 'none';
-                });
-            }, 5000);  // Adjust the delay as needed
-        </script>
+
     </div>
     <div class="footer">
-        <!-- <p><h5>&copy;</h5> <h3>2024 GreenLeaf Capital</h3> <br> <h4>All rights reserved.</h4></p> -->
         <p>
             <h3>GreenLeaf Capital <span class="small-font">&copy;</span></h3>
-            <h4>2024 All rights reserved. lolutites</h4>
+            <h4>2024 All rights reserved.</h4>
         </p>
     </div>
+    
+    <a class="back-button" href="/dashboard">
+        <i class="fas fa-arrow-left fa-2x"></i>
+    </a>
+
 </body>
 
 </html>

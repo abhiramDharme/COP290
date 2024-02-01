@@ -27,6 +27,25 @@ body {
     margin-bottom: 15px;
 }
 
+.back-button {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #007bff;; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3 ease;
+}
+
+.back-button:hover {
+    background-color: #0069d9;
+}
+
 input[type="text"],
 input[type="email"],
 textarea {
@@ -45,6 +64,8 @@ button {
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3 ease;
 }
 
 button:hover {

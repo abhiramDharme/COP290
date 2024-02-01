@@ -220,7 +220,7 @@ def register():
         email = request.form['email']
         balance = 0.0
 
-        new_user = User(username=username, password_hash=hashed_password, Name=Name, Contact=Contact, email=email, balance=balance)
+        new_user = User(username=username, password_hash=hashed_password, Name=Name, Contact=Contact, email=email, balance=round(balance,2))
         db.session.add(new_user)
 
         db.session.commit()
@@ -237,6 +237,10 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global fig
+    global filtered_stocks
+    fig=go.Figure()
+    filtered_stocks=dropdown_stocks
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -261,7 +265,7 @@ def dashboard():
     global dropdown_stocks
     if 'user_id' in session:
         plot_graph_candle('^NSEI', startDate=date.today()-relativedelta(years=1), endDate=date.today(), rsi='false', vwaps='false')
-        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks, balance=current_user.balance)
+        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks, balance=round(current_user.balance,2))
     else:
         return redirect(url_for('index'))
 
@@ -293,7 +297,11 @@ def process_data():
         compare_type = "absolute"
 
     if(compare_type=='absolute'):
-        plot_graph_candle(stock1 + '.NS', startD, endD, rsi, vwaps)
+        if(stock1=="^NSEI"):
+            plot_graph_candle(stock1, startD, endD, rsi, vwaps)
+        else:
+            plot_graph_candle(stock1 + '.NS', startD, endD, rsi, vwaps)
+
         if(stock2!='select'):
             plot_graph_line(stock2 + '.NS', startD, endD)
         if(stock3!='select'):
@@ -303,7 +311,11 @@ def process_data():
     
     if(compare_type=='relative'):
         stocks=[]
-        if(stock1!='select'): stocks.append(stock1+'.NS')
+        if(stock1!='select'): 
+            if(stock1=="^NSEI"):
+                stocks.append(stock1)
+            else:
+                stocks.append(stock1+'.NS')
         if(stock2!='select'): stocks.append(stock2+'.NS')
         if(stock3!='select'): stocks.append(stock3+'.NS')
         if(stock4!='select'): stocks.append(stock4+'.NS')
@@ -415,7 +427,7 @@ def contact():
 
 @app.route('/funds')
 def funds():
-    return render_template('funds.html', username=session['username'], balance=current_user.balance)
+    return render_template('funds.html', username=session['username'], balance=round(current_user.balance, 2))
 
 @app.route('/add_funds', methods=['POST'])
 @login_required
@@ -428,7 +440,7 @@ def add_funds():
 
         flash(f"Funds added successfully: +{amount} INR", 'success')
 
-        return render_template('funds.html', username=current_user.username, balance=current_user.balance)
+        return render_template('funds.html', username=current_user.username, balance=round(current_user.balance, 2))
 
 @app.route('/withdraw_funds', methods=['POST'])
 @login_required
@@ -446,7 +458,7 @@ def withdraw_funds():
         else:
             flash("Insufficient funds for withdrawal.", 'error')
 
-        return render_template('funds.html', username=current_user.username, balance=current_user.balance)
+        return render_template('funds.html', username=current_user.username, balance=round(current_user.balance,2))
 
 @app.route('/portfolio', methods=['GET', 'POST'])
 @login_required
@@ -469,7 +481,9 @@ def buy_sell():
     if request.method == 'POST':
         action = request.form['action']
         symbol = request.form['stock1']
-        quantity = int(request.form['quantity'])
+        quantity = request.form['quantity']
+        if quantity == "": quantity=1
+        quantity=int(quantity)
         ticker = yf.Ticker(symbol)
         stock_info = ticker.info
         print(stock_info['currentPrice'])
@@ -486,8 +500,7 @@ def buy_sell():
 
                 if user_portfolio:
                     total_existing_investment = user_portfolio.total_investment + total_investment
-                    new_avg_buy_price = (user_portfolio.total_investment * user_portfolio.avg_buy_price + total_investment) / total_existing_investment
-
+                    new_avg_buy_price = (user_portfolio.quantity * user_portfolio.avg_buy_price + total_investment) / (user_portfolio.quantity + quantity)
                     user_portfolio.quantity += quantity
                     user_portfolio.avg_buy_price = new_avg_buy_price
                     user_portfolio.total_investment = total_existing_investment
@@ -523,7 +536,7 @@ def buy_sell():
 
     return render_template('portfolio.html',
                     username=current_user.username,
-                    balance=current_user.balance,
+                    balance=round(current_user.balance,2),
                     portfolio=user_portfolio,
                     dropdown_stocks_portfolio=final_df['symbol'].tolist())
 

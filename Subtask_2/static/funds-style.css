@@ -88,6 +88,7 @@ body {
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .add-funds-button:hover {
@@ -95,13 +96,14 @@ body {
 }
 
 .withdraw-funds-button {
-    width: 100px;
+    width: 120px;
     text-align: center;
     padding: 10px;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .withdraw-funds-button:hover {
@@ -148,16 +150,21 @@ body {
 
 }
 
-.dashboard-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #dc3545;
-    color: white;
+.back-button {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #007bff;; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
     border-radius: 5px;
-    text-decoration: none;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3 ease;
 }
 
-.dashboard-button:hover {
-    background-color: #c82333;
-    
+.back-button:hover {
+    background-color: #0069d9;
 }

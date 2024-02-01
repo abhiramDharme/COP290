@@ -45,3 +45,22 @@ body {
 .footer p {
     margin: 0;
 }
+
+.back-button {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #007bff;; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3 ease;
+}
+
+.back-button:hover {
+    background-color: #0069d9;
+}
