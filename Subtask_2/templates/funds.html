@@ -9,18 +9,9 @@
 </head>
 
 <body>
-    <div class="header">
-        <h1>Explore Our Funds</h1>
-    </div>
 
     <div class="content">
-        <p>Welcome to our funds page. Explore the various investment options we offer:</p>
-
-        <div class="fund">
-            <h2>Fund Name 1</h2>
-            <p>Description of Fund 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <p>Minimum Investment: $1,000</p>
-        </div>
+        <h3>Welcome to our funds page.</h3> <h3>Explore the options to add or withdraw your funds:</h3>
 
 
         <!-- Add more fund sections as needed -->
@@ -28,12 +19,50 @@
         <!-- Form for adding funds -->
         <div class="add-funds-form" id="addFundsForm">
             <h2>Add Funds to Your Demat Account</h2>
-            <form action="/add_funds" method="POST" class="funds-form">
-                <label for="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" min="0" step="any" required>
+            <form action="/add_funds" method="POST" class="funds-form" id="addFundsForm">
+                <label for="addAmount">Amount:</label>
+                <input type="number" id="addAmount" name="amount" min="0" step="any" required>
                 <button type="submit" class="add-funds-button">Add Funds</button>
             </form>
         </div>
+        
+        <!-- Withdraw funds form -->
+        <div class="withdraw-funds-form" id="withdrawFundsForm">
+            <h2>Withdraw Funds from Your Demat Account</h2>
+            <form action="/withdraw_funds" method="POST" class="funds-form" id="withdrawFundsForm">
+                <label for="withdrawAmount">Amount:</label>
+                <input type="number" id="withdrawAmount" name="amount" min="0" step="any" required>
+                <button type="submit" class="withdraw-funds-button">Withdraw Funds</button>
+            </form>
+        </div>
+
+        <div class="welcome-container">
+            <h2>Welcome, {{ username }}!</h2>
+            <p>This is Funds . Your balance is {{balance}}</p>
+            <a href="/dashboard" class="dashboard-button">Dashboard</a>
+        </div>
+        
+        <!-- Display fund transaction status -->
+        <div class="fund-transaction-status">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <script>
+            // Clear flashed messages after a delay
+            setTimeout(function() {
+                document.querySelectorAll('.flashes').forEach(function(flash) {
+                    flash.style.display = 'none';
+                });
+            }, 5000);  // Adjust the delay as needed
+        </script>
     </div>
     <div class="footer">
         <!-- <p><h5>&copy;</h5> <h3>2024 GreenLeaf Capital</h3> <br> <h4>All rights reserved.</h4></p> -->

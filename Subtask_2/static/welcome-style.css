@@ -11,37 +11,30 @@ body {
 }
 
 button {
-    width: 100%;
     padding: 10px;
     border: none;
     background-color: #007bff;
 }
 
 .compare-box {
+    display: inline-block;
+    padding: 6px 20px;
     background-color: #007bff;
-    padding: 0px;
-    border-radius: 1px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 140px;
-    height: 25px;
-    margin: auto;
-    position: fixed;
-    top: 30px;
-    left: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    font-size: small;
     color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    position: fixed;
+    top: 58px;
+    width: 140px;
+    left: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-container {
     display: flex;
     align-items: center;
     position: fixed;
-    top: 30px; 
+    top: 60px; 
     left: 230px;
     width: 38%; 
     height: 50 px;
@@ -58,9 +51,9 @@ button {
     display: flex;
     align-items: center;
     position: fixed;
-    top: 27px; 
+    top: 57px; 
     left: 805px; 
-    width: 200px; 
+    width: 200 px; 
     height: 50 px;
 }
 
@@ -68,9 +61,9 @@ button {
     display: flex;
     align-items: center;
     position: fixed;
-    top: 27px; 
+    top: 57px; 
     left: 963px; 
-    width: 200px; 
+    width: 200 px; 
     height: 50 px;
 }
 
@@ -78,7 +71,7 @@ button {
     display: flex;
     align-items: center;
     position: fixed;
-    top: 101px; 
+    top: 131px; 
     left: 50px; 
 }
 
@@ -86,7 +79,7 @@ button {
     display: flex;
     align-items: center;
     position: fixed;
-    top: 101px; 
+    top: 131px; 
     left: 110px; 
 }
 
@@ -99,7 +92,7 @@ button {
     height: 25px;
     margin: auto;
     position: fixed;
-    top: 65px;
+    top: 95px;
     left: 40px;
     display: flex;
     justify-content: center;
@@ -125,7 +118,7 @@ button {
     height: 150px;
     overflow-y: auto;
     position: fixed;
-    top: 30px;
+    top: 60px;
     left: 1130px;
     z-index: 1;
 }
@@ -138,10 +131,12 @@ button {
     border-radius: 5px;
     text-decoration: none;
     position: fixed;
-    top: 240px;
+    top: 270px;
     width: 120px;
     left: 1229px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .filter-button:hover {
@@ -154,7 +149,7 @@ button {
     padding: 10px;
     position: fixed;
     left: 40px;
-    top: 137px;
+    top: 167px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     height: 500px;
@@ -200,7 +195,7 @@ button {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 280px;
     position: fixed;
-    top: 30px;
+    top: 60px;
     left: 1130px;
 }   
 
@@ -210,7 +205,7 @@ button {
 
 .graph-container {
     position: fixed;
-    top: 120px;  
+    top: 150px;  
     left: 208px;  
     width: 850px;  
     height: 540px;  
@@ -246,7 +241,7 @@ button {
     border: 1px solid #ccc; 
     margin: 50px auto;
     position: fixed;
-    top: 240px;
+    top: 270px;
     left: 1130px;
     text-align: left;
     background-color: white;

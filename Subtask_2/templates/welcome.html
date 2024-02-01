@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="compare-box">
-        <h5>Choose stock(s):</h5>
-    </div>
+    <button class="compare-box">Choose Stock(s):</button>
     
     <form action ="process_data" method="post">
         <div class="dropdown-container">
@@ -159,8 +157,8 @@
     </div>
     
     <div class="welcome-container">
-        <h1>Welcome, {{ username }}!</h1>
-        <p>This is your dashboard.</p>
+        <h2>Welcome, {{ username }}!</h2>
+        <p>This is your dashboard. Your balance is {{balance}}</p>
         <a href="/logout" class="logout-button">Logout</a>
     </div>
 

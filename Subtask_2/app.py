@@ -9,6 +9,7 @@ import pandas as pd
 import pandas_ta as ta
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from flask_login import login_required, LoginManager, UserMixin, login_user, logout_user, current_user
 
 
 app = Flask(__name__)
@@ -19,14 +20,41 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+user = current_user
+
 # User Model
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     Name = db.Column(db.String(100), nullable=False)
     Contact = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(200), nullable=False)
+    balance = db.Column(db.Float, nullable=False, default=0.0)
+
+class Portfolio(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    symbol = db.Column(db.String(10), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    avg_buy_price = db.Column(db.Float, nullable=False)
+    current_price = db.Column(db.Float, nullable=True)  # Update this periodically
+    total_investment = db.Column(db.Float, nullable=False)
+    realized_profit_loss = db.Column(db.Float, default=0.0)
+    unrealized_profit_loss = db.Column(db.Float, default=0.0)
+
+def calculate_total_realized_profit_loss(portfolio):
+    return sum(stock.realized_profit_loss for stock in portfolio)
+
+def calculate_total_unrealized_profit_loss(portfolio):
+    return sum(stock.unrealized_profit_loss for stock in portfolio)
 
 # Initialize Database within Application Context
 with app.app_context():
@@ -190,9 +218,16 @@ def register():
         Name = request.form['Name']
         Contact = request.form['Contact']
         email = request.form['email']
+        balance = 0.0
 
-        new_user = User(username=username, password_hash=hashed_password, Name=Name, Contact=Contact, email=email)
+        new_user = User(username=username, password_hash=hashed_password, Name=Name, Contact=Contact, email=email, balance=balance)
         db.session.add(new_user)
+
+        db.session.commit()
+
+        new_user_portfolio = Portfolio(user_id=new_user.id, symbol='^NSEI', quantity=1, avg_buy_price=1, current_price=1, total_investment=1)
+        db.session.add(new_user_portfolio)
+
         db.session.commit()
 
         flash('Registration successful! Please login.')
@@ -210,6 +245,7 @@ def login():
         if user and check_password_hash(user.password_hash, password):
             session['user_id'] = user.id
             session['username'] = user.username
+            login_user(user)
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password')
@@ -225,7 +261,7 @@ def dashboard():
     global dropdown_stocks
     if 'user_id' in session:
         plot_graph_candle('^NSEI', startDate=date.today()-relativedelta(years=1), endDate=date.today(), rsi='false', vwaps='false')
-        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks)
+        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks, balance=current_user.balance)
     else:
         return redirect(url_for('index'))
 
@@ -379,7 +415,117 @@ def contact():
 
 @app.route('/funds')
 def funds():
-    return render_template('funds.html')
+    return render_template('funds.html', username=session['username'], balance=current_user.balance)
+
+@app.route('/add_funds', methods=['POST'])
+@login_required
+def add_funds():
+    if request.method == 'POST':
+        amount = float(request.form['amount'])
+        current_user.balance += amount
+
+        db.session.commit()
+
+        flash(f"Funds added successfully: +{amount} INR", 'success')
+
+        return render_template('funds.html', username=current_user.username, balance=current_user.balance)
+
+@app.route('/withdraw_funds', methods=['POST'])
+@login_required
+def withdraw_funds():
+    if request.method == 'POST':
+        amount = float(request.form['amount'])
+        if current_user.balance >= amount:
+            current_user.balance -= amount
+
+            session['balance'] = current_user.balance
+
+            db.session.commit()
+
+            flash(f"Funds withdrawn successfully: -{amount} INR", 'success')
+        else:
+            flash("Insufficient funds for withdrawal.", 'error')
+
+        return render_template('funds.html', username=current_user.username, balance=current_user.balance)
+
+@app.route('/portfolio', methods=['GET', 'POST'])
+@login_required
+def portfolio():
+    user_portfolio = Portfolio.query.filter_by(user_id=current_user.id).all()
+    total_realized_profit_loss = calculate_total_realized_profit_loss(user_portfolio)
+    total_unrealized_profit_loss = calculate_total_unrealized_profit_loss(user_portfolio)
+    return render_template('portfolio.html',
+                           username=current_user.username,
+                           balance=current_user.balance,
+                           portfolio=user_portfolio,
+                           total_realized_profit_loss=total_realized_profit_loss,
+                           total_unrealized_profit_loss=total_unrealized_profit_loss,
+                           dropdown_stocks_portfolio=final_df['symbol'].tolist())
+
+
+@app.route('/buy_sell', methods=['POST', 'GET'])
+@login_required
+def buy_sell():
+    if request.method == 'POST':
+        action = request.form['action']
+        symbol = request.form['stock1']
+        quantity = int(request.form['quantity'])
+        ticker = yf.Ticker(symbol)
+        stock_info = ticker.info
+        print(stock_info['currentPrice'])
+
+        current_price = stock_info['currentPrice']
+
+        user_portfolio = Portfolio.query.filter_by(user_id=current_user.id, symbol=symbol).first()
+
+        if action == 'buy':
+            total_investment = quantity * current_price
+
+            if current_user.balance >= total_investment:
+                current_user.balance -= total_investment
+
+                if user_portfolio:
+                    total_existing_investment = user_portfolio.total_investment + total_investment
+                    new_avg_buy_price = (user_portfolio.total_investment * user_portfolio.avg_buy_price + total_investment) / total_existing_investment
+
+                    user_portfolio.quantity += quantity
+                    user_portfolio.avg_buy_price = new_avg_buy_price
+                    user_portfolio.total_investment = total_existing_investment
+                    user_portfolio.current_price = current_price
+                else:
+                    user_portfolio = Portfolio(user_id=current_user.id, symbol=symbol, quantity=quantity,
+                                               avg_buy_price=current_price, current_price=current_price,
+                                               total_investment=total_investment)
+                    db.session.add(user_portfolio)
+
+                flash(f"Bought {quantity} shares of {symbol} successfully!", 'success')
+            else:
+                flash("Insufficient funds for the purchase.", 'error')
+
+        elif action == 'sell':
+            if user_portfolio and user_portfolio.quantity >= quantity:
+                user_portfolio.quantity -= quantity
+                user_portfolio.current_price = current_price
+                total_sale = quantity * current_price
+                realized_profit_loss = total_sale - (quantity * user_portfolio.avg_buy_price)
+                user_portfolio.realized_profit_loss += realized_profit_loss
+                current_user.balance += total_sale
+                flash(f"Sold {quantity} shares of {symbol} successfully!", 'success')
+
+                if user_portfolio.quantity == 0:
+                    db.session.delete(user_portfolio)
+            else:
+                flash("Insufficient shares for the sale or stock not found in the portfolio.", 'error')
+
+        db.session.commit()
+
+    user_portfolio = Portfolio.query.filter_by(user_id=current_user.id).all()
+
+    return render_template('portfolio.html',
+                    username=current_user.username,
+                    balance=current_user.balance,
+                    portfolio=user_portfolio,
+                    dropdown_stocks_portfolio=final_df['symbol'].tolist())
 
 
 if __name__ == '__main__':

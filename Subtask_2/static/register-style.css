@@ -22,11 +22,17 @@ input[type="text"], input[type="password"] {
     box-sizing: border-box;
 }
 
-button {
+.button {
     width: 100%;
     padding: 10px;
     border: none;
     background-color: #007bff;
     color: white;
     border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0069d9;
 }
