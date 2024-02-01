@@ -147,6 +147,50 @@ button {
     background-color: #0069d9;
 }
 
+.menu-bar {
+    background-color: #ffffff;
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    left: 40px;
+    top: 137px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    height: 500px;
+    padding: 20px;
+    width: 100px;
+}
+
+.menu-bar-nav {
+    list-style: none;
+    padding: 10px;
+}
+
+.menu-bar-nav i {
+    display: block;
+    margin: -30px;
+    margin-bottom: 10px;
+}
+
+.menu-bar-nav li {
+    margin-bottom: 39px;
+}
+
+.menu-bar-nav a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    display: block;
+    text-align: center;
+}
+
+.menu-bar-nav a:hover {
+    color: #0069d9;
+}
+
+
 .welcome-container {
     text-align: center;
     background-color: white;
@@ -231,42 +275,6 @@ li {
 
 ::-webkit-scrollbar-track {
     background-color: #f1f1f1;
-}
-
-nav {
-    background-color: #ffffff;
-    color: #fff;
-    padding: 10px;
-    position: fixed;
-    left: 40px;
-    top: 130px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    height: 500px;
-    padding: 20px;
-    width: 100px;
-}
-
-nav ul {
-    list-style: none;
-    padding: 10px;
-}
-
-nav li {
-    margin-bottom: 50px; 
-}
-
-nav a {
-    text-decoration: none;
-    color: #000; 
-    font-weight: bold;
-    font-size: 12px;
-    font-family: 'Arial', sans-serif;
-    display: block;
-}
-
-nav a:hover {
-    color: #0069d9; 
 }
 
 #apply-filter {
