@@ -45,7 +45,7 @@ class Portfolio(db.Model):
     symbol = db.Column(db.String(10), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     avg_buy_price = db.Column(db.Float, nullable=False)
-    current_price = db.Column(db.Float, nullable=True)  # Update this periodically
+    current_price = db.Column(db.Float, nullable=True)
     total_investment = db.Column(db.Float, nullable=False)
     realized_profit_loss = db.Column(db.Float, default=0.0)
     unrealized_profit_loss = db.Column(db.Float, default=0.0)
@@ -194,7 +194,6 @@ def fetch_stock_data():
         final_df = pd.DataFrame()
 
 
-# Fetch stock data only if it hasn't been fetched before
 if final_df.empty:
     fetch_stock_data()
     # print(final_df)
@@ -220,12 +219,21 @@ def register():
         email = request.form['email']
         balance = 0.0
 
-        new_user = User(username=username, password_hash=hashed_password, Name=Name, Contact=Contact, email=email, balance=round(balance,2))
+        new_user = User(username=username, 
+                        password_hash=hashed_password, 
+                        Name=Name, Contact=Contact, 
+                        email=email, 
+                        balance=round(balance,2))
         db.session.add(new_user)
 
         db.session.commit()
 
-        new_user_portfolio = Portfolio(user_id=new_user.id, symbol='^NSEI', quantity=1, avg_buy_price=1, current_price=1, total_investment=1)
+        new_user_portfolio = Portfolio(user_id=new_user.id, 
+                                       symbol='^NSEI', 
+                                       quantity=1, 
+                                       avg_buy_price=1, 
+                                       current_price=1, 
+                                       total_investment=1)
         db.session.add(new_user_portfolio)
 
         db.session.commit()
@@ -265,7 +273,12 @@ def dashboard():
     global dropdown_stocks
     if 'user_id' in session:
         plot_graph_candle('^NSEI', startDate=date.today()-relativedelta(years=1), endDate=date.today(), rsi='false', vwaps='false')
-        return render_template('welcome.html', username=session['username'], filtered_stocks=filtered_stocks, fig=fig.to_html(full_html=False), dropdown_stocks=dropdown_stocks, balance=round(current_user.balance,2))
+        return render_template('welcome.html', 
+                               username=session['username'], 
+                               filtered_stocks=filtered_stocks, 
+                               fig=fig.to_html(full_html=False), 
+                               dropdown_stocks=dropdown_stocks, 
+                               balance=round(current_user.balance,2))
     else:
         return redirect(url_for('index'))
 
@@ -323,7 +336,9 @@ def process_data():
 
     
     
-    return render_template('welcome.html', fig=fig.to_html(full_html=False), filtered_stocks=filtered_stocks, dropdown_stocks=dropdown_stocks)
+    return render_template('welcome.html', fig=fig.to_html(full_html=False), 
+                           filtered_stocks=filtered_stocks, 
+                           dropdown_stocks=dropdown_stocks)
         
 @app.route('/filter', methods=['POST'])
 def filter():
@@ -348,7 +363,7 @@ def filter():
         roa = request.form.get('roa')
         price_to_sales = request.form.get('price_to_sales')
 
-        filter_df = final_df  # Initialize with the complete DataFrame
+        filter_df = final_df
 
         if pe_ratio is not None and pe_ratio != '':
             filter_df = filter_df[filter_df['trailingPE'] <= float(pe_ratio)]
@@ -386,12 +401,14 @@ def filter():
 
     filtered_stocks = filter_df['symbol'].tolist()
 
-    return render_template('welcome.html', fig=fig.to_html(full_html=False), filtered_stocks=filtered_stocks, dropdown_stocks=dropdown_stocks)
+    return render_template('welcome.html', 
+                           fig=fig.to_html(full_html=False), 
+                           filtered_stocks=filtered_stocks, 
+                           dropdown_stocks=dropdown_stocks)
 
 @app.route('/profile')
 def profile():
     if 'user_id' in session:
-        # Fetch user details from the database based on the user's session ID
         user = User.query.get(session['user_id'])
 
         if user:
@@ -399,13 +416,11 @@ def profile():
                 'username': user.username,
                 'name': user.Name,
                 'contact_number': user.Contact,
-                'email': user.email  # Update this if you have an email field in your User model
-                # Add more user details as needed
+                'email': user.email 
             }
 
             return render_template('profile.html', username=user_details['username'], user_details=user_details)
         else:
-            # Handle the case when the user is not found in the database
             flash('User not found.', 'error')
             return redirect(url_for('index'))
     else:
