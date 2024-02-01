@@ -141,6 +141,7 @@ button {
     top: 240px;
     width: 120px;
     left: 1229px;
+    cursor: pointer;
 }
 
 .filter-button:hover {
