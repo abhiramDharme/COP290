@@ -1,9 +1,10 @@
+#NEED TO ADD NIFTY50 IN DD LISTS
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify   
 from flask_sqlalchemy import SQLAlchemy
 import yfinance as yf
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import pandas as pd
 import pandas_ta as ta
 from datetime import date
@@ -80,7 +81,7 @@ def plot_graph_candle(stock1, startDate, endDate, rsi, vwaps):
                     showlegend=True,
                     margin=dict(l=70, r=30, t=60, b=30),  # Adjust the left, right, top, and bottom margins
                     width=850,  # Set the width of the entire graph
-                    height=515,  # Set the height of the entire graph
+                    height=540,  # Set the height of the entire graph
                     yaxis=dict(fixedrange=False)
                 )
 
@@ -119,7 +120,7 @@ def plot_graph_relative(stocks, start_date, end_date):
         legend_title='Stocks',
         margin=dict(l=70, r=30, t=60, b=30),  # Adjust the left, right, top, and bottom margins
                     width=850,  # Set the width of the entire graph
-                    height=515,  # Set the height of the entire graph
+                    height=540,  # Set the height of the entire graph
                     yaxis=dict(fixedrange=False)
     )
 

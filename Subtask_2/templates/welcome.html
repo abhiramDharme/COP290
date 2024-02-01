@@ -2,78 +2,19 @@
 <html>
 <head>
     <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='welcome-style.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
-    <!-- add a small box on top left of this webpage to go to 'compare.html' -->
-    <div class="compare-container">
+    <div class="compare-box">
         <h5>Choose stock(s):</h5>
     </div>
     
-    <button class="filter-button" onclick="showFilterForm()">Show Filters</button>
-    <div id="filterForm" style="display: none;">
-        <form action="{{ url_for('filter') }}" method="POST">
-            <label for="pe_ratio">PE Ratio:</label>
-            <input type="number" id="pe_ratio" name="pe_ratio" min="0" step="any">
-            <label for="dividend_yield">Dividend Yield:</label>
-            <input type="number" id="dividend_yield" name="dividend_yield" min="0" step="any">
-            <label for="market_cap">Market Cap:</label>
-            <input type="number" id="market_cap" name="market_cap" min="0" step="any">
-            <label for="market_cap_greater">Market Cap less than:</label>
-            <input type="number" id="market_cap_greater_than" name="market_cap_greater_than" min="0" step="any">
-            <label for="debt_to_equity">Debt to Equity:</label>
-            <input type="number" id="debt_to_equity" name="debt_to_equity" min="0" step="any">
-            <label for="current_ratio">Current Ratio:</label>
-            <input type="number" id="current_ratio" name="current_ratio" min="0" step="any">
-            <label for="eps">EPS:</label>
-            <input type="number" id="eps" name="eps" min="0" step="any">
-            <label for="price_to_book">Price to Book:</label>
-            <input type="number" id="price_to_book" name="price_to_book" min="0" step="any">
-            <label for="earning_growth">Earning Growth:</label>
-            <input type="number" id="earning_growth" name="earning_growth" min="0" step="any">
-            <label for="ebitda_margin">EBITDA Margin:</label>
-            <input type="number" id="ebitda_margin" name="ebitda_margin" min="0" step="any">
-            <label for="entreprise_to_ebitda">Enterprise/EBITDA:</label>
-            <input type="number" id="entreprise_to_ebitda" name="entreprise_to_ebitda" min="0" step="any">
-            <label for="peg ratio">PEG Ratio:</label>
-            <input type="number" id="peg_ratio" name="peg_ratio" min="0" step="any">
-            <label for="roe">ROE:</label>
-            <input type="number" id="roe" name="roe" min="0" step="any">
-            <label for="roce">ROCE:</label>
-            <input type="number" id="roce" name="roce" min="0" step="any">
-            <label for="roa">ROA:</label>
-            <input type="number" id="roa" name="roa" min="0" step="any">
-            <label for="price_to_sales">Price to Sales:</label>
-            <input type="number" id="price_to_sales" name="price_to_sales" min="0" step="any">
-            <button class="filter-button" type="submit">Apply Filters</button>
-        </form>
-    </div>
-
-    <div class="menu-bar">
-        <nav class="menu-bar-nav">
-            <ul>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/watchlist">Watchlist</a></li>
-                <li><a href="/portfolio">Portfolio</a></li>
-                <li><a href="/contact">Contact</a></li>
-                <li><a href="/funds">Funds</a></li>
-                <li><a href="/settings">Settings</a></li>
-            </ul>
-        </nav>
-    </div>
-    
-    <div class="welcome-container">
-        <h1>Welcome, {{ username }}!</h1>
-        <p>This is your dashboard.</p>
-        <a href="/logout" class="logout-button">Logout</a>
-    </div>
-
     <form action ="process_data" method="post">
         <div class="dropdown-container">
-            <select name="stock1" class="dropdown">
-                <option value="select">Primary Stock</option>
+            <select name="stock1" class="dropdown" required>
+                <option value="">Primary Stock</option>
                 {% for option in dropdown_stocks %}
                     <option value="{{ option }}">{{ option }}</option>
                 {% endfor %}
@@ -134,6 +75,64 @@
         </div>
 
     </form>
+
+    <button class="filter-button" onclick="showFilterForm()">Filters:</button>
+    <div id="filterForm" style="display: none;">
+        <form action="{{ url_for('filter') }}" method="POST">
+            <label for="pe_ratio">PE Ratio:</label>
+            <input type="number" id="pe_ratio" name="pe_ratio" min="0" step="any">
+            <label for="dividend_yield">Dividend Yield:</label>
+            <input type="number" id="dividend_yield" name="dividend_yield" min="0" step="any">
+            <label for="market_cap">Market Cap:</label>
+            <input type="number" id="market_cap" name="market_cap" min="0" step="any">
+            <label for="market_cap_greater">Market Cap less than:</label>
+            <input type="number" id="market_cap_greater_than" name="market_cap_greater_than" min="0" step="any">
+            <label for="debt_to_equity">Debt to Equity:</label>
+            <input type="number" id="debt_to_equity" name="debt_to_equity" min="0" step="any">
+            <label for="current_ratio">Current Ratio:</label>
+            <input type="number" id="current_ratio" name="current_ratio" min="0" step="any">
+            <label for="eps">EPS:</label>
+            <input type="number" id="eps" name="eps" min="0" step="any">
+            <label for="price_to_book">Price to Book:</label>
+            <input type="number" id="price_to_book" name="price_to_book" min="0" step="any">
+            <label for="earning_growth">Earning Growth:</label>
+            <input type="number" id="earning_growth" name="earning_growth" min="0" step="any">
+            <label for="ebitda_margin">EBITDA Margin:</label>
+            <input type="number" id="ebitda_margin" name="ebitda_margin" min="0" step="any">
+            <label for="entreprise_to_ebitda">Enterprise/EBITDA:</label>
+            <input type="number" id="entreprise_to_ebitda" name="entreprise_to_ebitda" min="0" step="any">
+            <label for="peg ratio">PEG Ratio:</label>
+            <input type="number" id="peg_ratio" name="peg_ratio" min="0" step="any">
+            <label for="roe">ROE:</label>
+            <input type="number" id="roe" name="roe" min="0" step="any">
+            <label for="roce">ROCE:</label>
+            <input type="number" id="roce" name="roce" min="0" step="any">
+            <label for="roa">ROA:</label>
+            <input type="number" id="roa" name="roa" min="0" step="any">
+            <label for="price_to_sales">Price to Sales:</label>
+            <input type="number" id="price_to_sales" name="price_to_sales" min="0" step="any">
+            <button class="filter-button" type="submit">Apply Filters</button>
+        </form>
+    </div>
+
+    <div class="menu-bar">
+        <nav class="menu-bar-nav" style="height: 524px;">
+            <ul>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/watchlist">Watchlist</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/funds">Funds</a></li>
+                <li><a href="/settings">Settings</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="welcome-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>This is your dashboard.</p>
+        <a href="/logout" class="logout-button">Logout</a>
+    </div>
 
     <div class="graph-container">
         {{ fig | safe }}
